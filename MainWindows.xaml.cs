@@ -28,6 +28,7 @@ namespace CockroachRace
         private string _aboutCockroach = "ТАРАКАН ПО КЛИЧКЕ «ФРОЛ» — \nБОЛЕЕТ ЗА СБОРНУЮ РОССИИ  ПО ФУТБОЛУ.";
         private Task _cockroach1, _cockroach2;
         CancellationTokenSource cts1, cts2, cts3, cts4, cts5, cts6, cts7, cts8;
+        CancellationTokenSource[] cts = new CancellationTokenSource[9];
 
         public MainWindow()
         {
@@ -76,27 +77,27 @@ namespace CockroachRace
                 _isTapok = false;
             }
 
-            cts1 = new CancellationTokenSource();
-            cts2 = new CancellationTokenSource();
-            cts3 = new CancellationTokenSource();
-            cts4 = new CancellationTokenSource();
-            cts5 = new CancellationTokenSource();
-            cts6 = new CancellationTokenSource();
-            cts7 = new CancellationTokenSource();
-            cts8 = new CancellationTokenSource();
+           // var cts = new CancellationTokenSource[9];
+            //var cockroaches = new Image[9];
+            //var _cockroaches = new Task[9];
 
-            _cockroach1 = SetSpeed(cockroach1, 1);
-            _cockroach2 = SetSpeed(cockroach2, 2);
-            Task _cockroach3 = SetSpeed(cockroach3, 3);
-            Task _cockroach4 = SetSpeed(cockroach4, 4);
-            Task _cockroach5 = SetSpeed(cockroach5, 5);
-            Task _cockroach6 = SetSpeed(cockroach6, 6);
-            Task _cockroach7 = SetSpeed(cockroach7, 7);
-            Task _cockroach8 = SetSpeed(cockroach8, 8);
+            for (int i = 0; i < 8; i++)
+            {
+                cts[i] = new CancellationTokenSource();
+            }
+
+            _cockroach1 = SetSpeed(cockroach1, 1, 1, cts[0].Token);
+            _cockroach2 = SetSpeed(cockroach2, 2, 1, cts[1].Token);
+            Task _cockroach3 = SetSpeed(cockroach3, 3, 1, cts[2].Token);
+            Task _cockroach4 = SetSpeed(cockroach4, 4, 1, cts[3].Token);
+            Task _cockroach5 = SetSpeed(cockroach5, 5, 1, cts[4].Token);
+            Task _cockroach6 = SetSpeed(cockroach6, 6, 1, cts[5].Token);
+            Task _cockroach7 = SetSpeed(cockroach7, 7, 1, cts[6].Token);
+            Task _cockroach8 = SetSpeed(cockroach8, 8, 1, cts[7].Token);
 
         }
 
-        private async Task SetSpeed(Image _cockroach, int _number, int _speed = 1)
+        private async Task SetSpeed(Image _cockroach, int _number, int _speed, CancellationToken token)
         {
             int _x = 125;
             bool _win = true;
@@ -104,14 +105,7 @@ namespace CockroachRace
          
             while (_x <= 830)
             {
-                if (_number == 1 && cts1.Token.IsCancellationRequested) return; //остановка таска
-                if (_number == 2 && cts2.Token.IsCancellationRequested) return; 
-                if (_number == 3 && cts3.Token.IsCancellationRequested) return; 
-                if (_number == 4 && cts4.Token.IsCancellationRequested) return; 
-                if (_number == 5 && cts5.Token.IsCancellationRequested) return; 
-                if (_number == 6 && cts6.Token.IsCancellationRequested) return; 
-                if (_number == 7 && cts7.Token.IsCancellationRequested) return; 
-                if (_number == 8 && cts8.Token.IsCancellationRequested) return; 
+                if (token.IsCancellationRequested) return;
 
                 _x += rnd.Next(2, 15) * _speed; //speed
                 if (_myCockroach == _number) {
@@ -255,7 +249,7 @@ namespace CockroachRace
                         }
                         else
                         {
-                            cts1?.Cancel();
+                            cts[0].Cancel();
                         }
                         break;
                     case "cockroach2":
@@ -265,7 +259,7 @@ namespace CockroachRace
                         }
                         else
                         {
-                            cts2?.Cancel();
+                            cts[1].Cancel();
                         }
                         break;
                     case "cockroach3":
@@ -275,7 +269,7 @@ namespace CockroachRace
                         }
                         else
                         {
-                            cts3?.Cancel();
+                            cts[2]?.Cancel();
                         }
                         break;
                     case "cockroach4":
@@ -285,7 +279,7 @@ namespace CockroachRace
                         }
                         else
                         {
-                            cts4?.Cancel();
+                            cts[3]?.Cancel();
                         }
                         break;
                     case "cockroach5":
@@ -295,7 +289,7 @@ namespace CockroachRace
                         }
                         else
                         {
-                            cts5?.Cancel();
+                            cts[4]?.Cancel();
                         }
                         break;
                     case "cockroach6":
@@ -305,7 +299,7 @@ namespace CockroachRace
                         }
                         else
                         {
-                            cts6?.Cancel();
+                            cts[5]?.Cancel();
                         }
                         break;
                     case "cockroach7":
@@ -315,7 +309,7 @@ namespace CockroachRace
                         }
                         else
                         {
-                            cts7?.Cancel();
+                            cts[6]?.Cancel();
                         }
                         break;
                     case "cockroach8":
@@ -325,7 +319,7 @@ namespace CockroachRace
                         }
                         else
                         {
-                            cts8?.Cancel();
+                            cts[7]?.Cancel();
                         }
                         break;
                 }
