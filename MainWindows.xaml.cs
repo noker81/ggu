@@ -22,7 +22,8 @@ namespace CockroachRace
     public partial class MainWindow : Window
     {
         private int _totalScore = 2000, _bet = 200;
-        private int _myCockroach, _myPlace, _playerSpeed;
+        private int _myCockroach, _myPlace;
+        private float _playerSpeed;
         private bool _isGaming, _isSpeed, _isTapok, _countkill;
         private int _winner;
         private Image[] _img, _objects;
@@ -98,9 +99,9 @@ namespace CockroachRace
 
         }
 
-        private async Task SetSpeed(Image _cockroach, int _number, int _speed, CancellationToken token)
+        private async Task SetSpeed(Image _cockroach, int _number, float _speed, CancellationToken token)
         {
-            int _x = 125;
+            float _x = 125;
             bool _win = true;
             Random rnd = new();
 
@@ -109,6 +110,7 @@ namespace CockroachRace
                 if (token.IsCancellationRequested) return;
 
                 _x += rnd.Next(2, 15) * _speed; //speed
+
                 if (_myCockroach == _number)
                 {
                     _x += _playerSpeed;
@@ -186,8 +188,6 @@ namespace CockroachRace
             place.Visibility = Visibility.Hidden;
             betWin.Visibility = Visibility.Hidden;
             
-
-
             for (int i = 0; i < _img.Length; i++)
             {
                 cts[i]?.Cancel();
@@ -225,7 +225,7 @@ namespace CockroachRace
                 if (_totalScore >= 50)
                 {
                     _totalScore -= 50;
-                    _playerSpeed = 1;
+                    _playerSpeed = 0.5f;
                     _isSpeed = false;
                     totalCount.Content = _totalScore.ToString();
                     image2.Source = new BitmapImage(new Uri(@"/assets/turbo_disabled.png", UriKind.Relative));
