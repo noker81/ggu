@@ -12,6 +12,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
+using System.Windows.Resources;
 using System.Windows.Shapes;
 
 namespace CockroachRace
@@ -33,6 +34,7 @@ namespace CockroachRace
         public MainWindow()
         {
             InitializeComponent();
+
             _img = new Image[] { cockroach1, cockroach2, cockroach3, cockroach4, cockroach5, cockroach6, cockroach7, cockroach8 };
             _aboutCockroach = new string[] { "ТАРАКАН ПО КЛИЧКЕ «ФРОЛ» — \nБОЛЕЕТ ЗА СБОРНУЮ  РОССИИ  ПО ФУТБОЛУ.",
                     "ТАРАКАН ПО КЛИЧКЕ «БАГЗ БАННИ» — \nОЧЕНЬ УМНЫЙ ТАРАКАН,\nРАНЬШЕ ОБИТАЛ В БИБЛИОТЕКЕ.",
@@ -165,6 +167,9 @@ namespace CockroachRace
                     _isTapok = true;
 
                     image3.Source = new BitmapImage(new Uri(@"/assets/tapok_disabled.png", UriKind.Relative));
+                    StreamResourceInfo sri = Application.GetResourceStream(new Uri(@"/assets/wait.ani", UriKind.Relative));
+                    Cursor customCursor = new(sri.Stream);
+                    Cursor = customCursor;
 
                 }
             }
@@ -188,6 +193,8 @@ namespace CockroachRace
             place.Visibility = Visibility.Hidden;
             betWin.Visibility = Visibility.Hidden;
             
+
+
             for (int i = 0; i < _img.Length; i++)
             {
                 cts[i]?.Cancel();
@@ -211,6 +218,7 @@ namespace CockroachRace
 
         private void GameOver()
         {
+            Cursor = Cursors.Arrow;
             image4.Visibility = Visibility.Visible;
             reloadBtn.Visibility = Visibility.Visible;
             totalCountW.Visibility = Visibility.Visible;
@@ -263,6 +271,7 @@ namespace CockroachRace
                     Image srcImage = e.Source as Image;
                     srcImage.Source = new BitmapImage(new Uri(@"/assets/cockroach_die.png", UriKind.Relative));
                     _isTapok = _countkill = false;
+                    Cursor = Cursors.Arrow;
                 }
             }
 
